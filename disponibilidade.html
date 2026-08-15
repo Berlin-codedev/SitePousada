@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Disponibilidade | Refúgio da Taquara</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1b263b;
+            --accent: #c5a059;
+            --bg-light: #f8f9fa;
+            --text-dark: #2b2b2b;
+            --ocupado: #c0392b;
+            --ocupado-bg: #fdecea;
+            --disponivel-bg: #eaf7ee;
+            --disponivel-dot: #2e9e5b;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-dark); background-color: #fff; line-height: 1.7; }
+        h1, h2, h3, .logo { font-family: 'Playfair Display', serif; }
+
+        header {
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: rgba(27, 38, 59, 0.95); backdrop-filter: blur(10px);
+            color: white; padding: 1.2rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+        }
+        .logo { font-size: 1.5rem; letter-spacing: 2px; color: var(--accent); text-decoration: none; }
+        nav a { color: white; text-decoration: none; margin-left: 2rem; font-size: 0.9rem; font-weight: 300; }
+        nav a:hover { color: var(--accent); }
+
+        .container { max-width: 900px; margin: 120px auto 60px auto; padding: 0 5%; }
+
+        .breadcrumb { font-size: 0.9rem; color: #666; margin-bottom: 2rem; }
+        .breadcrumb a { color: var(--primary); text-decoration: none; }
+
+        .page-title { font-size: 2.3rem; color: var(--primary); margin-bottom: 0.5rem; }
+        .page-subtitle { color: #666; margin-bottom: 2.5rem; font-size: 1rem; max-width: 600px; }
+
+        /* Card do calendário */
+        .calendario-card {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--accent);
+        }
+
+        .calendario-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .mes-atual {
+            font-size: 1.4rem;
+            color: var(--primary);
+            text-transform: capitalize;
+            min-width: 220px;
+            text-align: center;
+        }
+
+        .nav-btn {
+            background: white;
+            border: 1px solid #ddd;
+            color: var(--primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .nav-btn:hover { background: var(--accent); border-color: var(--accent); color: white; }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .nav-btn:disabled:hover { background: white; border-color: #ddd; color: var(--primary); }
+
+        .dias-semana {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+        }
+
+        .grid-dias {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+        }
+
+        .dia {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        .dia.vazio { visibility: hidden; }
+
+        .dia.disponivel {
+            background: var(--disponivel-bg);
+            color: #1f5c37;
+            font-weight: 500;
+        }
+
+        .dia.ocupado {
+            background: var(--ocupado-bg);
+            color: var(--ocupado);
+            font-weight: 500;
+            text-decoration: line-through;
+            text-decoration-thickness: 2px;
+        }
+
+        .dia.passado {
+            color: #ccc;
+            background: transparent;
+        }
+
+        .dia.hoje {
+            border: 2px solid var(--accent);
+        }
+
+        /* Legenda */
+        .legenda {
+            display: flex;
+            gap: 1.8rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .legenda-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #555;
+        }
+
+        .dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .dot.disponivel-dot { background: var(--disponivel-bg); border: 1px solid var(--disponivel-dot); }
+        .dot.ocupado-dot { background: var(--ocupado-bg); border: 1px solid var(--ocupado); }
+
+        /* CTA final */
+        .cta-box {
+            margin-top: 2.5rem;
+            text-align: center;
+        }
+        .cta-box p {
+            color: #666;
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+        }
+        .btn-whatsapp {
+            display: inline-block;
+            background-color: #25d366;
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        @media (max-width: 600px) {
+            .calendario-card { padding: 1.5rem 1rem; }
+            .dia { font-size: 0.75rem; }
+            .mes-atual { font-size: 1.1rem; min-width: 160px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">REFÚGIO TAQUARA</a>
+        <nav>
+            <a href="index.html">Voltar ao Início</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">Início</a> / <span>Disponibilidade</span>
+        </div>
+
+        <h1 class="page-title">Consulte a Disponibilidade</h1>
+        <p class="page-subtitle">Veja abaixo os dias já reservados (em vermelho) e escolha a melhor data para sua estadia. Datas em verde estão livres.</p>
+
+        <div class="calendario-card">
+            <div class="calendario-header">
+                <button class="nav-btn" id="btn-prev" aria-label="Mês anterior">&#8592;</button>
+                <div class="mes-atual" id="mes-atual"></div>
+                <button class="nav-btn" id="btn-next" aria-label="Próximo mês">&#8594;</button>
+            </div>
+
+            <div class="dias-semana">
+                <span>Dom</span><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span>
+            </div>
+
+            <div class="grid-dias" id="grid-dias"></div>
+
+            <div class="legenda">
+                <div class="legenda-item"><span class="dot disponivel-dot"></span> Disponível</div>
+                <div class="legenda-item"><span class="dot ocupado-dot"></span> Indisponível</div>
+            </div>
+        </div>
+
+        <div class="cta-box">
+            <p>Encontrou uma data boa pra você? Fale com a gente e garanta sua reserva.</p>
+            <a href="https://wa.me/5548999999999?text=Olá,%20gostaria%20de%20reservar%20uma%20data%20que%20vi%20disponível%20no%20calendário%20do%20site." target="_blank" class="btn-whatsapp">
+                Reservar via WhatsApp
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // ===== MOCK: datas ocupadas =====
+        // Formato: "YYYY-MM-DD". Isso aqui depois vira uma chamada
+        // fetch('/api/disponibilidade?mes=...') pra API Spring Boot.
+        const datasOcupadas = new Set([
+            "2026-08-18", "2026-08-19", "2026-08-20",
+            "2026-08-27", "2026-08-28",
+            "2026-09-04", "2026-09-05", "2026-09-06",
+            "2026-09-12",
+            "2026-09-19", "2026-09-20", "2026-09-21",
+            "2026-10-02", "2026-10-03",
+            "2026-10-15", "2026-10-16", "2026-10-17", "2026-10-18"
+        ]);
+
+        const nomesMeses = [
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ];
+
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
+
+        let mesAtual = hoje.getMonth();
+        let anoAtual = hoje.getFullYear();
+
+        const mesMinimo = { mes: hoje.getMonth(), ano: hoje.getFullYear() };
+
+        function formatarData(ano, mes, dia) {
+            const mm = String(mes + 1).padStart(2, "0");
+            const dd = String(dia).padStart(2, "0");
+            return `${ano}-${mm}-${dd}`;
+        }
+
+        function renderizarCalendario() {
+            document.getElementById("mes-atual").textContent = `${nomesMeses[mesAtual]} de ${anoAtual}`;
+
+            const grid = document.getElementById("grid-dias");
+            grid.innerHTML = "";
+
+            const primeiroDiaSemana = new Date(anoAtual, mesAtual, 1).getDay();
+            const totalDias = new Date(anoAtual, mesAtual + 1, 0).getDate();
+
+            for (let i = 0; i < primeiroDiaSemana; i++) {
+                const vazio = document.createElement("div");
+                vazio.className = "dia vazio";
+                grid.appendChild(vazio);
+            }
+
+            for (let dia = 1; dia <= totalDias; dia++) {
+                const el = document.createElement("div");
+                const dataStr = formatarData(anoAtual, mesAtual, dia);
+                const dataObj = new Date(anoAtual, mesAtual, dia);
+
+                el.className = "dia";
+                el.textContent = dia;
+
+                if (dataObj < hoje) {
+                    el.classList.add("passado");
+                } else if (datasOcupadas.has(dataStr)) {
+                    el.classList.add("ocupado");
+                    el.title = "Indisponível";
+                } else {
+                    el.classList.add("disponivel");
+                    el.title = "Disponível";
+                }
+
+                if (dataObj.getTime() === hoje.getTime()) {
+                    el.classList.add("hoje");
+                }
+
+                grid.appendChild(el);
+            }
+
+            const noLimiteMinimo = anoAtual === mesMinimo.ano && mesAtual === mesMinimo.mes;
+            document.getElementById("btn-prev").disabled = noLimiteMinimo;
+        }
+
+        document.getElementById("btn-prev").addEventListener("click", () => {
+            mesAtual--;
+            if (mesAtual < 0) { mesAtual = 11; anoAtual--; }
+            renderizarCalendario();
+        });
+
+        document.getElementById("btn-next").addEventListener("click", () => {
+            mesAtual++;
+            if (mesAtual > 11) { mesAtual = 0; anoAtual++; }
+            renderizarCalendario();
+        });
+
+        renderizarCalendario();
+    </script>
+
+</body>
+</html>

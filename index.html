@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refúgio da Taquara | Pousada Boutique & Natureza</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1b263b;
+            --accent: #c5a059;
+            --bg-light: #f8f9fa;
+            --text-dark: #2b2b2b;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-dark); background-color: #fff; line-height: 1.7; }
+        h1, h2, h3, .logo { font-family: 'Playfair Display', serif; }
+
+        header {
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: rgba(27, 38, 59, 0.95); backdrop-filter: blur(10px);
+            color: white; padding: 1.2rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+        }
+        .logo { font-size: 1.5rem; letter-spacing: 2px; color: var(--accent); text-decoration: none; }
+        nav a { color: white; text-decoration: none; margin-left: 2rem; font-size: 0.9rem; font-weight: 300; transition: color 0.3s; }
+        nav a:hover { color: var(--accent); }
+        .btn-nav { border: 1px solid var(--accent); padding: 0.5rem 1.2rem; border-radius: 4px; }
+
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; padding: 0 1rem;
+        }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; font-weight: 700; letter-spacing: 1px; }
+        .hero p { font-size: 1.2rem; max-width: 600px; margin-bottom: 2rem; font-weight: 300; }
+        .btn-primary { background-color: var(--accent); color: white; padding: 0.9rem 2.2rem; text-decoration: none; font-weight: 600; letter-spacing: 1px; border-radius: 4px; transition: background 0.3s; }
+        .btn-primary:hover { background-color: #b08d4b; }
+
+        .section { padding: 6rem 10%; }
+        .section-title { text-align: center; font-size: 2.5rem; color: var(--primary); margin-bottom: 3rem; }
+
+        .grid-quartos { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; }
+        .card-quarto { background: var(--bg-light); border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: transform 0.3s; text-decoration: none; color: inherit; display: block; }
+        .card-quarto:hover { transform: translateY(-5px); }
+        .card-img { height: 240px; background-size: cover; background-position: center; }
+        .card-content { padding: 2rem; }
+        .card-content h3 { font-size: 1.5rem; color: var(--primary); margin-bottom: 0.5rem; }
+        .card-content p { font-size: 0.95rem; color: #666; margin-bottom: 1.5rem; }
+        .preco { font-size: 1.1rem; font-weight: 600; color: var(--accent); }
+        .link-detalhes { display: inline-block; margin-top: 1rem; font-size: 0.9rem; font-weight: 600; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
+
+        footer { background-color: var(--primary); color: white; text-align: center; padding: 4rem 10%; }
+        footer h2 { color: var(--accent); margin-bottom: 1rem; }
+        .btn-whatsapp { display: inline-block; background-color: #25d366; color: white; padding: 1rem 2.5rem; border-radius: 50px; text-decoration: none; font-weight: 600; margin-top: 1.5rem; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
+
+        @media (max-width: 768px) { .hero h1 { font-size: 2.5rem; } nav { display: none; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">REFÚGIO TAQUARA</a>
+        <nav>
+            <a href="index.html#sobre">A Pousada</a>
+            <a href="index.html#quartos">Bangalôs</a>
+            <a href="disponibilidade.html" class="btn-nav">Reservar</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Exclusividade em Meio à Natureza</h1>
+        <p>Desconecte-se da rotina em um refúgio de alto padrão localizado em Taquara, Florianópolis.</p>
+        <a href="disponibilidade.html" class="btn-primary">Consultar Disponibilidade</a>
+    </section>
+
+    <section id="sobre" class="section" style="background-color: var(--bg-light);">
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <h2 class="section-title" style="margin-bottom: 1.5rem;">Uma Experiência Única</h2>
+            <p style="font-size: 1.1rem; color: #555;">Projetada para proporcionar conforto absoluto, nossa pousada une o rústico e o sofisticado. Cada detalhe foi pensado para garantir privacidade, silêncio e uma vista memorável.</p>
+        </div>
+    </section>
+
+    <section id="quartos" class="section">
+        <h2 class="section-title">Nossos Bangalôs</h2>
+        <div class="grid-quartos">
+            <!-- Card 1: Bangalô Master -->
+            <a href="quarto-master.html" class="card-quarto">
+                <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="card-content">
+                    <h3>Bangalô Master Vista Mar</h3>
+                    <p>Cama King Size, hidromassagem privativa na varanda e decoração minimalista de alto luxo.</p>
+                    <span class="preco">A partir de R$ 1.200 / noite</span>
+                    <br>
+                    <span class="link-detalhes">Ver Detalhes &rarr;</span>
+                </div>
+            </a>
+
+            <!-- Card 2: Chalé Luxo Serra & Verde -->
+            <a href="quarto-chale.html" class="card-quarto">
+                <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="card-content">
+                    <h3>Chalé Luxo Serra & Verde</h3>
+                    <p>Totalmente integrado à mata nativa, lareira ecológica, deck privativo e máximo silêncio.</p>
+                    <span class="preco">A partir de R$ 1.000 / noite</span>
+                    <br>
+                    <span class="link-detalhes">Ver Detalhes &rarr;</span>
+                </div>
+            </a>
+
+            <!-- Card 3: Suíte Vista Jardim -->
+            <a href="quarto-suite.html" class="card-quarto">
+                <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1595576508898-0ad5c879a061?auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="card-content">
+                    <h3>Suíte Vista Jardim</h3>
+                    <p>Ambiente aconchegante com varanda para o jardim, ideal para quem busca conforto com custo mais acessível.</p>
+                    <span class="preco">A partir de R$ 650 / noite</span>
+                    <br>
+                    <span class="link-detalhes">Ver Detalhes &rarr;</span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <footer id="contato">
+        <h2>Garanta Sua Estadia</h2>
+        <p>Atendimento exclusivo e direto com nossa central de reservas.</p>
+        <a href="https://wa.me/5548999999999?text=Olá,%20gostaria%20de%20verificar%20a%20disponibilidade%20na%20pousada." target="_blank" class="btn-whatsapp">
+            Falar com Concierge via WhatsApp
+        </a>
+        <p style="margin-top: 3rem; font-size: 0.8rem; color: #888;">&copy; 2026 Refúgio Taquara. Todos os direitos reservados.</p>
+    </footer>
+
+</body>
+</html>
